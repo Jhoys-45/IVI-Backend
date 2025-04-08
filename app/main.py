@@ -1,12 +1,12 @@
 from fastapi import FastAPI
-from app.db import init_db
+from pydantic import BaseModel
 
 app = FastAPI()
 
-@app.on_event("startup")
-async def startup():
-    await init_db()
+class Usuario(BaseModel):
+    correo: str
+    contraseña: str
 
-@app.get("/")
-def home():
-    return {"msg": "IVI API activa!"}
+@app.post("/registro")
+def registrar_usuario(usuario: Usuario):
+    return {"mensaje": f"Usuario {usuario.correo} registrado correctamente"}
